@@ -5,6 +5,7 @@ val ktorVersion: String by project
 plugins {
     kotlin("jvm") version "1.7.10"
     kotlin("plugin.serialization") version "1.7.10"
+    id("com.google.devtools.ksp") version "1.7.10-1.0.6"
     application
 }
 
@@ -30,6 +31,11 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-client-auth:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+    // koin
+    implementation("io.insert-koin:koin-core:3.2.2")
+    implementation("io.insert-koin:koin-annotations:1.0.3")
+    ksp ("io.insert-koin:koin-ksp-compiler:1.0.3")
 }
 
 tasks.test {
@@ -38,6 +44,11 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+// for KSP
+sourceSets.main {
+    java.srcDirs("build/generated/ksp/main/kotlin")
 }
 
 application {
